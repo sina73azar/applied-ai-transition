@@ -1,0 +1,47 @@
+"""Week 1: normalize and summarize transaction-like mappings."""
+
+from collections.abc import Iterable, Mapping
+from decimal import Decimal
+from typing import TypedDict
+
+
+class Transaction(TypedDict):
+    transaction_id: str
+    category: str
+    amount: Decimal
+    succeeded: bool
+
+
+class CategoryTotal(TypedDict):
+    category: str
+    amount: Decimal
+    transaction_count: int
+
+
+def normalize_transaction(raw: Mapping[str, object]) -> Transaction:
+    """Validate and normalize one transaction.
+
+    Requirements:
+    - transaction_id and category must be non-empty strings after trimming;
+    - category is returned in lowercase;
+    - amount accepts Decimal, int, float, or a numeric string, and must be
+      strictly positive;
+    - succeeded must be an actual bool, not an integer;
+    - invalid values raise ValueError with the invalid field name.
+    """
+
+    raise NotImplementedError("Complete this during week 1")
+
+
+def summarize_succeeded(
+    rows: Iterable[Mapping[str, object]],
+) -> list[CategoryTotal]:
+    """Return totals for successful transactions grouped by category.
+
+    Normalize every input row. Exclude unsuccessful rows. Sort results by amount
+    descending and then category ascending. Return an empty list for no
+    successful rows.
+    """
+
+    raise NotImplementedError("Complete this during week 1")
+
