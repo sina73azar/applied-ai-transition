@@ -42,7 +42,6 @@ def normalize_transaction(raw: Mapping[str, object]) -> Transaction:
     elif not isinstance(raw.get("succeeded"), bool):
         raise ValueError("succeeded is not a bool")# type: ignore
     else:
-        print(transaction_id)
         return {
             "transaction_id": transaction_id,
             "category": str(raw.get("category")).strip().lower(),
