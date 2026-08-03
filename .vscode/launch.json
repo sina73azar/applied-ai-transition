@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug normalize_transaction checks",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "pytest",
+        "cwd": "${workspaceFolder}/python_foundations",
+        "args": [
+          "-q",
+          "checks/check_ledger.py",
+          "-k",
+          "normalize_transaction"
+        ],
+        "console": "integratedTerminal",
+        "justMyCode": true
+      }
+    ]
+  }

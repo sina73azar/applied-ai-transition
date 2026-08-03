@@ -5,6 +5,6 @@ requires-python = ">=3.10"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-python_files = ["check_*.py"]
-testpaths = ["checks"]
+python_files = ["check_*.py", "mrc_*.py"]
+testpaths = ["checks", "mrc_test"]
 

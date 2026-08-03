@@ -1,6 +1,7 @@
 """Week 1: normalize and summarize transaction-like mappings."""
 
 from collections.abc import Iterable, Mapping
+# from curses import raw
 from decimal import Decimal
 from typing import TypedDict
 
@@ -29,8 +30,25 @@ def normalize_transaction(raw: Mapping[str, object]) -> Transaction:
     - succeeded must be an actual bool, not an integer;
     - invalid values raise ValueError with the invalid field name.
     """
-
-    raise NotImplementedError("Complete this during week 1")
+    transaction_id = str(raw.get("transaction_id")).strip()
+    if transaction_id=="":
+        raise ValueError("transaction_id is empty")# type: ignore
+    elif str(raw.get("category")).strip()=="":
+        raise ValueError("category is empty")# type: ignore
+    elif not isinstance(raw.get("amount"), (int, float, Decimal)):
+        raise ValueError("amount is not a number")# type: ignore
+    elif Decimal(str(raw.get("amount")))<=0:
+        raise ValueError("amount is not strictly positive")# type: ignore
+    elif not isinstance(raw.get("succeeded"), bool):
+        raise ValueError("succeeded is not a bool")# type: ignore
+    else:
+        print(transaction_id)
+        return {
+            "transaction_id": transaction_id,
+            "category": str(raw.get("category")).strip().lower(),
+            "amount": Decimal(str(raw.get("amount"))),
+            "succeeded": bool(raw.get("succeeded")),
+        }
 
 
 def summarize_succeeded(
