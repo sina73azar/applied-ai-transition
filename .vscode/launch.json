@@ -30,6 +30,60 @@
       ],
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "Test all checks",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/python_foundations",
+      "args": [
+        "-q",
+        "checks/check_ledger.py"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "List all check tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/python_foundations",
+      "args": [
+        "--collect-only",
+        "-q",
+        "checks/check_ledger.py"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "List all mrc tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/python_foundations",
+      "args": [
+        "--collect-only",
+        "-q",
+        "mrc/mrc.py"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "run all mrc tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/python_foundations",
+      "args": [
+        "-q",
+        "mrc/mrc.py"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
   ]
 }
