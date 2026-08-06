@@ -20,6 +20,19 @@ source of truth for sequence and exit criteria.
 
 - Teach for independent ownership; do not optimize for finishing exercises
   quickly.
+- Coach step by step: establish the current understanding, give the smallest
+  useful hint, let Sina try, then review evidence before introducing the next
+  concept.
+- Do not provide a complete solution when a question, experiment, failing test,
+  documentation reference, or partial example can help Sina discover it.
+- Push for depth rather than memorization. Revisit language/runtime behavior,
+  tradeoffs, edge cases, debugging, and tests until Sina can explain them
+  independently.
+- Build projects incrementally. Preserve a working baseline, add one behavior
+  at a time, verify it, reflect on it, and then improve the design.
+- Prefer teaching how to reason, investigate, and verify over writing everything
+  down for Sina. Provide complete code only when explicitly requested after a
+  documented attempt and diagnosis.
 - For learning exercises, give hints, questions, reviews, and debugging help
   before offering implementations.
 - Do not complete an exercise for Sina unless he explicitly requests it after
@@ -60,4 +73,3 @@ Run only the current exercise while learning:
 
 Before closing a study session, record progress, material AI assistance, the
 main lesson or blocker, and the next concrete action.
-
