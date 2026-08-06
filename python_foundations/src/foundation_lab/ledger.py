@@ -65,10 +65,10 @@ def normalize_transaction(raw: Mapping[str, object]) -> Transaction:
 
     if amt.is_nan():
         raise ValueError("amount is a Nan")
-    
+
     if amt.is_infinite():
         raise ValueError("amount is infinite")
-    
+
     if not amt.is_finite() or amt <= 0:
         raise ValueError("amount is not strictly positive")
 
@@ -95,5 +95,26 @@ def summarize_succeeded(
     successful rows.
     """
 
-    raise NotImplementedError("summarize_succeeded is not yet implemented")
+    groups: dict[str, CategoryTotal] = {}
+    for row in rows:
+        tx = normalize_transaction(row)
+        if not tx["succeeded"]:
+            continue
+        cat = tx["category"]
+        if cat not in groups:
+            groups[cat] = {
+                "category": cat,
+                "amount": Decimal(0),
+                "transaction_count": 0,
+            }
+        groups[cat]["amount"] += tx["amount"]
+        groups[cat]["transaction_count"] += 1
 
+    return sorted(
+        groups.values(),
+        key=category_sort_key,
+    )
+
+
+def category_sort_key(x: CategoryTotal) -> tuple[Decimal, str]:
+    return (-x["amount"], x["category"])

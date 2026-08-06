@@ -22,6 +22,7 @@ def test_normalize_transaction_trims_and_converts_values() -> None:
         "succeeded": True,
     }
 
+
 def test_normalize_transaction_amount_float() -> None:
     result = normalize_transaction(
         {
@@ -38,6 +39,7 @@ def test_normalize_transaction_amount_float() -> None:
         "amount": Decimal("0.1"),
         "succeeded": True,
     }
+
 
 def test_normalize_transaction_amount_float_str() -> None:
     result = normalize_transaction(
@@ -198,4 +200,46 @@ def test_summarize_succeeded_groups_and_sorts() -> None:
         {"category": "bill", "amount": Decimal("20.00"), "transaction_count": 2},
         {"category": "transfer", "amount": Decimal("20"), "transaction_count": 1},
     ]
-    
+
+
+def test_summarize_succeeded_groups_and_sorts_normalize_error() -> None:
+    with pytest.raises(ValueError, match="transaction_id"):
+        summarize_succeeded(
+            [
+                {
+                    "transaction_id": None,
+                    "category": "bill",
+                    "amount": "7.50",
+                    "succeeded": True,
+                },
+                {
+                    "transaction_id": "2",
+                    "category": "transfer",
+                    "amount": 20,
+                    "succeeded": True,
+                },
+                {
+                    "transaction_id": "3",
+                    "category": "Bill",
+                    "amount": "12.50",
+                    "succeeded": True,
+                },
+                {
+                    "transaction_id": "4",
+                    "category": "ignored",
+                    "amount": 100,
+                    "succeeded": False,
+                },
+                {
+                    "transaction_id": "5",
+                    "category": "airtime",
+                    "amount": 20,
+                    "succeeded": True,
+                },
+            ]
+        )
+
+
+def test_summarize_succeeded_empty() -> None:
+    result = summarize_succeeded([])
+    assert result == []
