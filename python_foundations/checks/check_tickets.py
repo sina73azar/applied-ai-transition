@@ -13,6 +13,61 @@ class SequenceClock:
         return next(self._values)
 
 
+def test_add_creates_normalized_open_ticket() -> None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+
+    ticket = queue.add(" 1 ", " First ", Priority.LOW)
+
+    assert ticket.ticket_id == "1"
+    assert ticket.title == "First"
+    assert ticket.priority is Priority.LOW
+    assert ticket.status is TicketStatus.OPEN
+    assert ticket.created_at == now
+    assert ticket.closed_at is None
+
+
+def test_empty_id_ticket_rejected() -> None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+
+    with pytest.raises(ValueError, match="ticket identifier cannot be empty"):
+        queue.add(" ", "First", Priority.LOW)
+
+
+def test_empty_title_ticket_rejected() -> None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+
+    with pytest.raises(ValueError, match="ticket title cannot be empty"):
+        queue.add("1", " ", Priority.LOW)
+
+
+def test_duplicate_ticket_id_rejected() -> None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+
+    queue.add("1", "First", Priority.LOW)
+    with pytest.raises(ValueError, match="duplicate ticket identifier"):
+        queue.add("1", "Duplicate", Priority.HIGH)
+
+
+def test_add_rejects_non_string_ticket_id()->None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+    with pytest.raises(ValueError, match="ticket identifier must be a string"):
+        queue.add(123, "Title", Priority.LOW)
+
+
+def test_add_rejects_non_string_ticket_title()->None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+    with pytest.raises(ValueError, match="ticket title must be a string"):
+        queue.add("1", 123, Priority.LOW)
+    with pytest.raises(ValueError, match="ticket title cannot be None"):
+        queue.add("1", None, Priority.LOW)
+
+
 def test_queue_selects_priority_then_oldest_then_identifier() -> None:
     now = datetime(2026, 8, 3, tzinfo=timezone.utc)
     queue = TicketQueue(SequenceClock(now, now + timedelta(seconds=1), now))

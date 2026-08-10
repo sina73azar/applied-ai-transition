@@ -37,7 +37,9 @@ class TicketQueue:
     """Store tickets and choose the next open ticket deterministically."""
 
     def __init__(self, clock: Clock | Callable[[], datetime]) -> None:
-        raise NotImplementedError("Complete this during week 2")
+
+        self._tickets: dict[str, Ticket] = {}
+        self._clock = clock
 
     def add(self, ticket_id: str, title: str, priority: Priority) -> Ticket:
         """Add a ticket.
@@ -45,8 +47,35 @@ class TicketQueue:
         Trim identifiers and titles. Reject empty values and duplicate
         identifiers with ValueError.
         """
+        # reject empty values
+        if ticket_id is None:
+            raise ValueError("ticket identifier cannot be None")
+        if not isinstance(ticket_id, str):
+            raise ValueError("ticket identifier must be a string")
+        ticket_id = ticket_id.strip()
+        if not ticket_id:
+            raise ValueError("ticket identifier cannot be empty")
+        if title is None:
+            raise ValueError("ticket title cannot be None")
+        if not isinstance(title, str):
+            raise ValueError("ticket title must be a string")
+        title = title.strip()
+        if not title:
+            raise ValueError("ticket title cannot be empty")
 
-        raise NotImplementedError("Complete this during week 2")
+        # check duplicate identifiers
+        if ticket_id in self._tickets:
+            raise ValueError(f"duplicate ticket identifier: {ticket_id}")
+
+        ticket = Ticket(
+            ticket_id=ticket_id,
+            title=title,
+            priority=priority,
+            created_at=self._clock(),
+        )
+        self._tickets[ticket_id] = ticket
+
+        return ticket
 
     def next_open(self) -> Ticket | None:
         """Return the highest-priority open ticket.

@@ -6,6 +6,7 @@ autocomplete corrections do not need separate entries.
 | Date | Task | Work attempted first | Assistance requested | What changed manually | Test or explanation proving ownership |
 |---|---|---|---|---|---|
 | Aug 3-8, 2026 | Week 1 ledger normalization and summaries | Implemented normalization, rewrote the validation flow, added edge cases, and built category aggregation and sorting | Pytest/debugger usage; Mapping and TypedDict; bool/int behavior; Decimal conversion and exceptions; sorting and error-policy review | Replaced the `elif` chain with independent validation,added exact Decimal handling and regression checks, chose dictionary aggregation, and propagated invalid data | 19 ledger checks pass; explained Decimal conversion, finite checks, dictionary grouping, tuple sort keys, and the caller contract |
+| Aug 10, 2026 | Week 2 ticket queue foundation | Initialized queue state, implemented `add()`, and wrote focused tests | Review of `self`, attribute visibility, instance versus class state, lambdas/callables, injected clocks, runtime validation, and test structure | Used `_tickets` as a per-instance dictionary, normalized inputs, rejected invalid values and duplicates, and expanded the tests | Five focused `add()` checks pass; remaining failures are isolated to the three intentionally unfinished methods |
 
 ## Week 1 Review
 
@@ -17,6 +18,14 @@ autocomplete corrections do not need separate entries.
   runtime values, and define explicit rules for callers.
 - Next time: establish the input contract and edge-case table before writing the
   implementation.
+
+## Week 2 In Progress
+
+- Main lesson: distinguish per-instance state from shared class state and make
+  runtime input failures intentional rather than leaking incidental exceptions.
+- Current blocker: none; `next_open()`, `close()`, and `all()` remain unfinished.
+- Next action: derive the three-part ordering key, then implement and test
+  `next_open()`.
 
 ## Weekly Ownership Check
 

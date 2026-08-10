@@ -84,6 +84,20 @@
       ],
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "run ticket checks",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/python_foundations",
+      "args": [
+        "-q",
+        "checks/check_tickets.py"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
+
   ]
 }
