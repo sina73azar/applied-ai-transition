@@ -52,14 +52,14 @@ def test_duplicate_ticket_id_rejected() -> None:
         queue.add("1", "Duplicate", Priority.HIGH)
 
 
-def test_add_rejects_non_string_ticket_id()->None:
+def test_add_rejects_non_string_ticket_id() -> None:
     now = datetime(2026, 8, 3, tzinfo=timezone.utc)
     queue = TicketQueue(lambda: now)
     with pytest.raises(ValueError, match="ticket identifier must be a string"):
         queue.add(123, "Title", Priority.LOW)
 
 
-def test_add_rejects_non_string_ticket_title()->None:
+def test_add_rejects_non_string_ticket_title() -> None:
     now = datetime(2026, 8, 3, tzinfo=timezone.utc)
     queue = TicketQueue(lambda: now)
     with pytest.raises(ValueError, match="ticket title must be a string"):
@@ -75,9 +75,9 @@ def test_queue_selects_priority_then_oldest_then_identifier() -> None:
     queue.add("b", "Second identifier", Priority.HIGH)
     queue.add("low", "Low priority", Priority.LOW)
     queue.add("a", "First identifier", Priority.HIGH)
-
-    assert queue.next_open() is not None
-    assert queue.next_open().ticket_id == "a"
+    next_open = queue.next_open()
+    assert next_open is not None
+    assert next_open.ticket_id == "a"
 
 
 def test_close_sets_status_and_time_and_rejects_second_close() -> None:
@@ -108,4 +108,3 @@ def test_queue_validates_input_and_returns_snapshot() -> None:
         queue.add("2", "Duplicate", Priority.HIGH)
     with pytest.raises(KeyError):
         queue.close("missing")
-

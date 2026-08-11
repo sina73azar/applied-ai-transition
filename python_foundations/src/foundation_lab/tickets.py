@@ -78,13 +78,29 @@ class TicketQueue:
         return ticket
 
     def next_open(self) -> Ticket | None:
+
         """Return the highest-priority open ticket.
 
         For equal priority, return the oldest ticket. Break a remaining tie by
         ticket_id. Return None when no ticket is open.
         """
 
-        raise NotImplementedError("Complete this during week 2")
+        #  filter only open status
+        open_tickets = [
+            ticket
+            for ticket in self._tickets.values()
+            if ticket.status == TicketStatus.OPEN
+        ]
+        if not open_tickets:
+            return None
+
+        # default sorting is ascending, so we need to sort by negative priority to get descending order
+
+        # In Python, min() efficiently finds the smallest element in an iterable without sorting the entire sequence, making it faster for this specific task. Conversely, sorted() returns a new list with all elements ordered, which is more computationally expensive. Use min() when only the smallest value is needed; use sorted() when ordering all elements is required. The key parameter in both functions allows custom comparison logic, enhancing flexibility.
+
+        return min(
+            open_tickets, key=lambda t: (-t.priority, t.created_at, t.ticket_id)
+        )
 
     def close(self, ticket_id: str) -> Ticket:
         """Close an open ticket and return it.
