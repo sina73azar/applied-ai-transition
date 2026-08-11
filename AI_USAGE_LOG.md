@@ -6,7 +6,7 @@ autocomplete corrections do not need separate entries.
 | Date | Task | Work attempted first | Assistance requested | What changed manually | Test or explanation proving ownership |
 |---|---|---|---|---|---|
 | Aug 3-8, 2026 | Week 1 ledger normalization and summaries | Implemented normalization, rewrote the validation flow, added edge cases, and built category aggregation and sorting | Pytest/debugger usage; Mapping and TypedDict; bool/int behavior; Decimal conversion and exceptions; sorting and error-policy review | Replaced the `elif` chain with independent validation,added exact Decimal handling and regression checks, chose dictionary aggregation, and propagated invalid data | 19 ledger checks pass; explained Decimal conversion, finite checks, dictionary grouping, tuple sort keys, and the caller contract |
-| Aug 10, 2026 | Week 2 ticket queue foundation | Initialized queue state, implemented `add()`, and wrote focused tests | Review of `self`, attribute visibility, instance versus class state, lambdas/callables, injected clocks, runtime validation, and test structure | Used `_tickets` as a per-instance dictionary, normalized inputs, rejected invalid values and duplicates, and expanded the tests | Five focused `add()` checks pass; remaining failures are isolated to the three intentionally unfinished methods |
+| Aug 10-11, 2026 | Week 2 ticket queue and state transitions | Initialized queue state; implemented `add()`, deterministic selection, closing, and snapshots; wrote focused tests | Review of `self`, visibility, instance versus class state, callables, protocols, iterators, injected clocks, runtime validation, tuple keys, and algorithmic complexity | Added explicit validation, per-instance dictionary state, O(n) ticket selection, deterministic snapshots, controlled close transitions, and a personal close-to-next-open test | 11 ticket checks pass; explained duplicate lookup, clock side effects, shallow tuple immutability, ordering rules, and O(n) versus O(n log n) |
 
 ## Week 1 Review
 
@@ -19,13 +19,21 @@ autocomplete corrections do not need separate entries.
 - Next time: establish the input contract and edge-case table before writing the
   implementation.
 
-## Week 2 In Progress
+## Week 2 Review
 
-- Main lesson: distinguish per-instance state from shared class state and make
-  runtime input failures intentional rather than leaking incidental exceptions.
-- Current blocker: none; `next_open()`, `close()`, and `all()` remain unfinished.
-- Next action: derive the three-part ordering key, then implement and test
-  `next_open()`.
+- Personally designed: ticket input validation, dictionary-backed instance
+  state, deterministic priority/age/identifier ordering, close transitions,
+  immutable collection snapshots, and an additional close-to-next-open test.
+- Main diagnosed risks: incidental `AttributeError` for invalid input, sorting
+  the entire queue when only one result is needed, and consuming the clock
+  during a failed state transition.
+- Main lesson: define object invariants and side effects explicitly, inject
+  nondeterministic dependencies, and match algorithm cost to the required
+  result.
+- Complexity explained: `next_open()` is O(n); `all()` is O(n log n) because
+  complete sorting dominates tuple construction.
+- Next action: begin Week 3 with the `events.py` iterator and generator
+  exercises after the Week 2 work is committed.
 
 ## Weekly Ownership Check
 

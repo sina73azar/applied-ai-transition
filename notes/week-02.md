@@ -184,3 +184,9 @@ comment when the code and real docstring already communicate the behavior.
 Design object state deliberately: decide what belongs to each instance, what
 must remain an internal detail, and which dependencies—such as time—should be
 injected so behavior can be tested deterministically.
+
+# sorted
+default sorting is ascending, so we need to sort by negative priority to get descending order
+
+# min() , max()
+In Python, min() efficiently finds the smallest element in an iterable without sorting the entire sequence, making it faster for this specific task. Conversely, sorted() returns a new list with all elements ordered, which is more computationally expensive. Use min() when only the smallest value is needed; use sorted() when ordering all elements is required. The key parameter in both functions allows custom comparison logic, enhancing flexibility.

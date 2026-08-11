@@ -94,10 +94,6 @@ class TicketQueue:
         if not open_tickets:
             return None
 
-        # default sorting is ascending, so we need to sort by negative priority to get descending order
-
-        # In Python, min() efficiently finds the smallest element in an iterable without sorting the entire sequence, making it faster for this specific task. Conversely, sorted() returns a new list with all elements ordered, which is more computationally expensive. Use min() when only the smallest value is needed; use sorted() when ordering all elements is required. The key parameter in both functions allows custom comparison logic, enhancing flexibility.
-
         return min(
             open_tickets, key=lambda t: (-t.priority, t.created_at, t.ticket_id)
         )
@@ -108,10 +104,19 @@ class TicketQueue:
         Raise KeyError for an unknown identifier and ValueError when already
         closed.
         """
-
-        raise NotImplementedError("Complete this during week 2")
+        ticket = self._tickets[ticket_id]
+        if ticket.status == TicketStatus.CLOSED:
+            raise ValueError(f"ticket {ticket_id} is already closed")
+        ticket.status = TicketStatus.CLOSED
+        ticket.closed_at = self._clock()
+        return ticket
 
     def all(self) -> tuple[Ticket, ...]:
         """Return an immutable snapshot ordered by creation and identifier."""
 
-        raise NotImplementedError("Complete this during week 2")
+        return tuple(
+            sorted(
+                self._tickets.values(),
+                key=lambda t: (t.created_at, t.ticket_id),
+            )
+        )

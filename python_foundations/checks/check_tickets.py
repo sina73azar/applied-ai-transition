@@ -95,6 +95,14 @@ def test_close_sets_status_and_time_and_rejects_second_close() -> None:
         queue.close("ticket-1")
 
 
+def test_close_rejects_unknown_ticket() -> None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(lambda: now)
+
+    with pytest.raises(KeyError):
+        queue.close("missing")
+
+
 def test_queue_validates_input_and_returns_snapshot() -> None:
     now = datetime(2026, 8, 3, tzinfo=timezone.utc)
     queue = TicketQueue(lambda: now)
@@ -108,3 +116,25 @@ def test_queue_validates_input_and_returns_snapshot() -> None:
         queue.add("2", "Duplicate", Priority.HIGH)
     with pytest.raises(KeyError):
         queue.close("missing")
+
+
+def test_close_ticket_and_select_next_open() -> None:
+    now = datetime(2026, 8, 3, tzinfo=timezone.utc)
+    queue = TicketQueue(SequenceClock(now, now + timedelta(seconds=1), now + timedelta(seconds=2)))
+
+    ticket1 = queue.add("ticket-1", "First ticket", Priority.HIGH)
+    ticket2 = queue.add("ticket-2", "Second ticket", Priority.MEDIUM)
+
+    # Close the ticket currently selected by next_open()
+    next_ticket = queue.next_open()
+    assert next_ticket is not None
+    closed_ticket = queue.close(next_ticket.ticket_id)
+
+    # Verify that the closed ticket is indeed closed
+    assert closed_ticket.status is TicketStatus.CLOSED
+    assert closed_ticket.closed_at is not None
+
+    # Verify that next_open() selects the remaining eligible ticket
+    remaining_ticket = queue.next_open()
+    assert remaining_ticket is not None
+    assert remaining_ticket.ticket_id == "ticket-2"
