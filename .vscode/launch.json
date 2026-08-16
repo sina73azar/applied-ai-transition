@@ -97,6 +97,21 @@
       ],
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "run event checks",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/python_foundations",
+      "args": [
+        "-q",
+        "checks/check_events.py",
+        "-k",
+        "blanks_and_report_source"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
 
   ]

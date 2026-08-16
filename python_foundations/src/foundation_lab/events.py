@@ -16,7 +16,40 @@ def iter_json_events(lines: Iterable[str]) -> Iterator[dict[str, Any]]:
     invalid or its top-level value is not an object.
     """
 
-    raise NotImplementedError("Complete this during week 3")
+    for i, item in enumerate(lines,start=1):
+        line = item.strip()
+        if not line:
+            continue
+
+        try:
+            import json
+
+            event = json.loads(line)
+        except Exception as exc:
+            raise EventParseError(f"line {i}: {exc}") from exc
+
+        if not isinstance(event, dict):
+            raise EventParseError(f"line {i}: expected object, got {type(event)}")
+
+        yield event
+"""     items = iter(lines)
+    for i, line in enumerate(items, start=1):
+        line = line.strip()
+        if not line:
+            continue
+
+        try:
+            import json
+
+            event = json.loads(line)
+        except Exception as exc:
+            raise EventParseError(f"line {i}: {exc}") from exc
+
+        if not isinstance(event, dict):
+            raise EventParseError(f"line {i}: expected object, got {type(event)}")
+
+        yield event """
+
 
 
 def iter_error_events(
