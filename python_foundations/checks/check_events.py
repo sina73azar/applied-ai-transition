@@ -9,7 +9,6 @@ from foundation_lab.events import (
 
 
 def test_json_events_skip_blanks_and_report_source_line() -> None:
-    a = ['{"level": "info"}', " ", '{"level": "error"}']
     events = iter_json_events(['{"level": "info"}', " ", '{"level": "error"}'])
 
     assert list(events) == [{"level": "info"}, {"level": "error"}]
@@ -39,9 +38,7 @@ def test_measure_operation_records_success() -> None:
     with measure_operation("retrieve", clock=lambda: next(times), sink=sink):
         pass
 
-    assert sink == [
-        {"name": "retrieve", "status": "ok", "duration_seconds": 0.25}
-    ]
+    assert sink == [{"name": "retrieve", "status": "ok", "duration_seconds": 0.25}]
 
 
 def test_measure_operation_records_error_and_reraises() -> None:
@@ -52,7 +49,4 @@ def test_measure_operation_records_error_and_reraises() -> None:
         with measure_operation("generate", clock=lambda: next(times), sink=sink):
             raise RuntimeError("dependency unavailable")
 
-    assert sink == [
-        {"name": "generate", "status": "error", "duration_seconds": 0.0}
-    ]
-
+    assert sink == [{"name": "generate", "status": "error", "duration_seconds": 0.0}]
