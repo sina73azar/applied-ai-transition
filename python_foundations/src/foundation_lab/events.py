@@ -38,7 +38,10 @@ def iter_error_events(
 ) -> Iterator[dict[str, Any]]:
     """Lazily yield events whose `level` is `error`, case-insensitively."""
 
-    raise NotImplementedError("Complete this during week 3")
+    for event in events:
+        level = event.get("level")
+        if isinstance(level, str) and level.lower() == "error":
+            yield event
 
 
 @contextmanager

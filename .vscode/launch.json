@@ -108,7 +108,7 @@
         "-q",
         "checks/check_events.py",
         "-k",
-        "test"
+        "test_error"
       ],
       "console": "integratedTerminal",
       "justMyCode": true
