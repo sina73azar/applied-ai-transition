@@ -57,5 +57,14 @@ def measure_operation(
     success and `error` when the body raises. Never swallow the original
     exception. Negative clock differences are recorded as zero.
     """
-
-    raise NotImplementedError("Complete this during week 3")
+    start = clock()
+    try:
+        yield
+        status = "ok"
+    except Exception:
+        status = "error"
+        raise
+    finally:
+        end = clock()
+        duration = max(0, end - start)
+        sink.append({"name": name, "status": status, "duration_seconds": duration})
